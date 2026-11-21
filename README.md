@@ -8,18 +8,18 @@ Spring Boot application integrates `MessageSource` quickly, to detect resource b
 
 ```xml
     <dependency>
-        <groupId>cn.unikue.springstarter</groupId>
+        <groupId>com.jiovan.spring.starter</groupId>
         <artifactId>message-resource-spring-boot-starter</artifactId>
         <version>LATEST</version>
     </dependency>
 ```
 
-> By default, this starter will auto take effect, you can turn it off by `spring.message-resource.enabled = false`
+> By default, this starter will auto take effect, you can turn it off by `jiovan.message-resource.enabled = false`
 
-- Configure Spring Boot `application.yml` with prefix `spring.message-resource` (**Optional**)
+- Configure Spring Boot `application.yml` with prefix `jiovan.message-resource` (**Optional**)
 
 ```yml
-spring:
+jiovan:
     message-resource:
         default-locale: en-US
         message-bundle:
@@ -29,11 +29,11 @@ spring:
 ```
 This will create a `MessageSource` bean, by auto scanning the files under the `scan-resources` paths of **classpath**.
 
-- Optional feature: Similar with the Spring `MessageSourceAware` facade, this starter declares a processor with `MessageSourceAccessorAware`, you can implement beans with that, the the Spring will inject a `MessageSourceAccessor`instance, then you can resolve messages. That's an alternative way to `MessageSource`.
+- Optional feature: Similar with the Spring `MessageSourceAware` facade, this starter declares a processor with `MessageSourceAccessorAware`, you can implement beans with that, the Spring will inject a `MessageSourceAccessor`instance, then you can resolve messages. That's an alternative way to `MessageSource`.
 
 ## Document
 
-- Github: https://github.com/unikueltd/message-resource-spring-boot-starter
+- Github: https://github.com/jiovan-labs/message-resource-spring-boot-starter
 
 ## Requirement
 
@@ -47,12 +47,12 @@ See the `NOTICE.txt` file for required notices and attributions.
 
 ## Donation
 
-You like this package? Then [donate to us](https://unikue.cn/donation) to support the development.
+You like this package? Then [donate to us](https://jiovan.com/donation) to support the development.
 
 ## Copyright
 
-Beijing Unikue Network Technology Ltd.
+Beijing Jiovan Technology Ltd.
 
 ## Website
 
-- Unikue: https://unikue.cn
+- Jiovan: https://jiovan.com

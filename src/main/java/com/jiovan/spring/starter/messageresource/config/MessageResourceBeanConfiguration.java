@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Unikue Ltd. All rights reserved.
+ * Copyright (c) 2016 Jiovan Ltd. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.unikue.springstarter.messageresource.config;
+package com.jiovan.spring.starter.messageresource.config;
 
 
 import jakarta.annotation.Nonnull;
@@ -25,14 +25,14 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBooleanProp
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
+import org.springframework.boot.validation.autoconfigure.ValidationAutoConfiguration;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import cn.unikue.commonplexus.springutil.message.BeanValidationMessenger;
-import cn.unikue.commonplexus.springutil.message.FormValidationMessenger;
-import cn.unikue.commonplexus.springutil.message.RestResponseMessenger;
+import com.jiovan.plexus.spring.toolkit.message.BeanValidationMessenger;
+import com.jiovan.plexus.spring.toolkit.message.FormValidationMessenger;
+import com.jiovan.plexus.spring.toolkit.message.RestResponseMessenger;
 
 
 /**
@@ -44,6 +44,14 @@ import cn.unikue.commonplexus.springutil.message.RestResponseMessenger;
 @ConditionalOnBooleanProperty(prefix = MessageResourceAutoConfiguration.PROPERTIES_PREFIX, name = "enabled", matchIfMissing = true)
 @AutoConfigureAfter(value = {MessageSourceAutoConfiguration.class, ValidationAutoConfiguration.class, MessageSourceAutoConfiguration.class})
 public class MessageResourceBeanConfiguration {
+    /**
+     * Returns a {@link com.jiovan.plexus.spring.toolkit.message.BeanValidationMessenger} backed by the detected message source
+     *
+     * @param source the message source used to resolve validation messages
+     * @param validator the lazily resolved validator used for bean validation
+     *
+     * @return a {@link com.jiovan.plexus.spring.toolkit.message.BeanValidationMessenger} combining the source and validator
+     */
     @Bean
     @ConditionalOnClass(value = Validator.class)
     @ConditionalOnBooleanProperty(prefix = MessageResourceAutoConfiguration.PROPERTIES_PREFIX + ".extra-messenger", name = "bean-validation", matchIfMissing = true)
@@ -52,6 +60,13 @@ public class MessageResourceBeanConfiguration {
         return new BeanValidationMessenger(source, validator);
     }
 
+    /**
+     * Returns a {@link com.jiovan.plexus.spring.toolkit.message.FormValidationMessenger} backed by the detected message source
+     *
+     * @param source the message source used to resolve form validation messages
+     *
+     * @return a {@link com.jiovan.plexus.spring.toolkit.message.FormValidationMessenger} backed by the given source
+     */
     @Bean
     @ConditionalOnBooleanProperty(prefix = MessageResourceAutoConfiguration.PROPERTIES_PREFIX + ".extra-messenger", name = "form-validation", matchIfMissing = true)
     @ConditionalOnMissingBean
@@ -59,6 +74,14 @@ public class MessageResourceBeanConfiguration {
         return new FormValidationMessenger(source);
     }
 
+    /**
+     * Returns a {@link com.jiovan.plexus.spring.toolkit.message.RestResponseMessenger} backed by the detected message source
+     *
+     * @param source the message source used to resolve REST response messages
+     * @param validator the lazily resolved validator used for response validation
+     *
+     * @return a {@link com.jiovan.plexus.spring.toolkit.message.RestResponseMessenger} combining the source and validator
+     */
     @Bean
     @ConditionalOnBooleanProperty(prefix = MessageResourceAutoConfiguration.PROPERTIES_PREFIX + ".extra-messenger", name = "rest-response", matchIfMissing = true)
     @ConditionalOnMissingBean

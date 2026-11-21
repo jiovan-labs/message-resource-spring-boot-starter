@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Unikue Ltd. All rights reserved.
+ * Copyright (c) 2021 Jiovan Ltd. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.unikue.springstarter.messageresource.property;
+package com.jiovan.spring.starter.messageresource.property;
 
 
 import java.io.Serializable;
@@ -28,8 +28,8 @@ import java.util.Locale;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.convert.DurationUnit;
 import org.springframework.core.Ordered;
-import cn.unikue.commonplexus.javaseutil.constant.StringVariantConst;
-import cn.unikue.springstarter.messageresource.config.MessageResourceAutoConfiguration;
+import com.jiovan.plexus.common.toolkit.constant.StringVariantConst;
+import com.jiovan.spring.starter.messageresource.config.MessageResourceAutoConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -39,6 +39,7 @@ import lombok.ToString;
  * Properties for message resource
  *
  * @author David Hsing
+ *
  * @see org.springframework.boot.autoconfigure.context.MessageSourceProperties
  */
 @ConfigurationProperties(prefix = MessageResourceAutoConfiguration.PROPERTIES_PREFIX)
@@ -172,7 +173,8 @@ public class MessageResourceProperties implements Serializable {
      * Properties for message resource accessor aware
      *
      * @author David Hsing
-     * @see cn.unikue.commonplexus.springutil.context.MessageSourceAccessorAware
+     *
+     * @see com.jiovan.plexus.spring.toolkit.context.MessageSourceAccessorAware
      */
     @Getter
     @Setter
@@ -204,21 +206,21 @@ public class MessageResourceProperties implements Serializable {
     @ToString
     public static class ExtraMessenger implements Serializable {
         /**
-         * Indicates whether to enable {@link cn.unikue.commonplexus.springutil.message.BeanValidationMessenger} or not
+         * Indicates whether to enable {@link com.jiovan.plexus.spring.toolkit.message.BeanValidationMessenger} or not
          * <p>
          * Default is {@code true}
          */
         private Boolean beanValidation = true;
 
         /**
-         * Indicates whether to enable {@link cn.unikue.commonplexus.springutil.message.FormValidationMessenger} or not
+         * Indicates whether to enable {@link com.jiovan.plexus.spring.toolkit.message.FormValidationMessenger} or not
          * <p>
          * Default is {@code true}
          */
         private Boolean formValidation = true;
 
         /**
-         * Indicates whether to enable {@link cn.unikue.commonplexus.springutil.message.RestResponseMessenger} or not
+         * Indicates whether to enable {@link com.jiovan.plexus.spring.toolkit.message.RestResponseMessenger} or not
          * <p>
          * Default is {@code true}
          */

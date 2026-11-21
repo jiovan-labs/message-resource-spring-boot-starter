@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Unikue Ltd. All rights reserved.
+ * Copyright (c) 2016 Jiovan Ltd. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.unikue.springstarter.messageresource.config;
+package com.jiovan.spring.starter.messageresource.config;
 
 
 import java.util.Optional;
@@ -40,22 +40,23 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.util.CollectionUtils;
-import cn.unikue.commonplexus.javaseutil.constant.CharVariantConst;
-import cn.unikue.commonplexus.javaseutil.util.CollectionPlainWraps;
-import cn.unikue.commonplexus.javaseutil.util.DurationUtilsWraps;
-import cn.unikue.commonplexus.javaseutil.util.StringUtilsWraps;
-import cn.unikue.commonplexus.springutil.constant.SpringPropertyConst;
-import cn.unikue.commonplexus.springutil.processor.MessageSourceAccessorProcessor;
-import cn.unikue.commonplexus.springutil.util.ResourceUtilsWraps;
-import cn.unikue.springstarter.messageresource.processor.MessageResourcePriorityProcessor;
-import cn.unikue.springstarter.messageresource.property.MessageResourceProperties;
-import cn.unikue.springstarter.messageresource.util.MessageResourceDetectorUtils;
+import com.jiovan.plexus.common.toolkit.constant.CharVariantConst;
+import com.jiovan.plexus.common.toolkit.util.CollectionPlainWraps;
+import com.jiovan.plexus.common.toolkit.util.DurationUtilsWraps;
+import com.jiovan.plexus.common.toolkit.util.StringUtilsWraps;
+import com.jiovan.plexus.spring.toolkit.constant.SpringPropertyConst;
+import com.jiovan.plexus.spring.toolkit.processor.MessageSourceAccessorProcessor;
+import com.jiovan.plexus.spring.toolkit.util.ResourceUtilsWraps;
+import com.jiovan.spring.starter.messageresource.processor.MessageResourcePriorityProcessor;
+import com.jiovan.spring.starter.messageresource.property.MessageResourceProperties;
+import com.jiovan.spring.starter.messageresource.util.MessageResourceDetectorUtils;
 
 
 /**
  * Configuration for message resource
  *
  * @author David Hsing
+ *
  * @see org.springframework.boot.autoconfigure.context.MessageSourceAutoConfiguration
  */
 @Configuration(proxyBeanMethods = false)
@@ -64,9 +65,17 @@ import cn.unikue.springstarter.messageresource.util.MessageResourceDetectorUtils
 @AutoConfigureOrder(value = Ordered.HIGHEST_PRECEDENCE)
 @EnableConfigurationProperties(value = MessageResourceProperties.class)
 public class MessageResourceAutoConfiguration {
-    public static final String PROPERTIES_PREFIX = "spring.message-resource";    // $NON-NLS-1$
+    public static final String PROPERTIES_PREFIX = "jiovan.message-resource";    // $NON-NLS-1$
     public static final String MESSAGE_SOURCE = "detectiveResourceMessageSource";    // $NON-NLS-1$
 
+    /**
+     * Returns the {@link org.springframework.context.MessageSource} assembled from configured and detected resource bundle base names
+     *
+     * @param environment the environment providing the configured {@code spring.messages.basename} property
+     * @param properties the message resource properties governing bundle detection, encoding, caching and locale fallback
+     *
+     * @return a configured {@link org.springframework.context.support.AbstractResourceBasedMessageSource}, or {@code null} if no base names are available
+     */
     @Bean(name = MESSAGE_SOURCE)
     @ConditionalOnMissingBean(name = MESSAGE_SOURCE)
     public MessageSource messageSource(@Nonnull Environment environment, @Nonnull MessageResourceProperties properties) {
@@ -92,6 +101,13 @@ public class MessageResourceAutoConfiguration {
         return result;
     }
 
+    /**
+     * Returns the {@link com.jiovan.spring.starter.messageresource.processor.MessageResourcePriorityProcessor} that raises this message source's priority
+     *
+     * @param properties the message resource properties providing the processor order
+     *
+     * @return a {@link com.jiovan.spring.starter.messageresource.processor.MessageResourcePriorityProcessor} with the configured order
+     */
     @Bean
     @ConditionalOnBooleanProperty(prefix = PROPERTIES_PREFIX + ".message-resource", name = "primary-message-resource", matchIfMissing = true)
     @ConditionalOnMissingBean
@@ -101,6 +117,14 @@ public class MessageResourceAutoConfiguration {
         return result;
     }
 
+    /**
+     * Returns the {@link com.jiovan.plexus.spring.toolkit.processor.MessageSourceAccessorProcessor} that registers message source accessors
+     *
+     * @param context the application context used to register the accessors
+     * @param properties the message resource properties providing the default locale and processor order
+     *
+     * @return a {@link com.jiovan.plexus.spring.toolkit.processor.MessageSourceAccessorProcessor} with the configured order
+     */
     @Bean
     @ConditionalOnBooleanProperty(prefix = PROPERTIES_PREFIX + ".accessor-aware", name = "enabled", matchIfMissing = true)
     @ConditionalOnMissingBean
