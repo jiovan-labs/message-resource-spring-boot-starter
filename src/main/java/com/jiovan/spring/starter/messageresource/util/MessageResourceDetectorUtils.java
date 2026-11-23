@@ -60,26 +60,28 @@ public abstract class MessageResourceDetectorUtils {
      *
      * @param addInternal whether to include the Hibernate Validator and Spring Security message bundles when present
      * @param scanRecursive whether to scan the given resource paths recursively
+     * @param scanClasspath whether to scan the classpath, required by ClassGraph 5
      * @param scanResources the resource paths to scan for properties files, may be {@code null}
      *
      * @return the detected base names, or {@code null} if none are found
      */
     @Nullable
-    public static Set<String> detectBaseNames(boolean addInternal, boolean scanRecursive, @Nullable String... scanResources) {
-        return detectBaseNames(addInternal, scanRecursive, ArrayUtilsWraps.asList(scanResources));
+    public static Set<String> detectBaseNames(boolean addInternal, boolean scanRecursive, boolean scanClasspath, @Nullable String... scanResources) {
+        return detectBaseNames(addInternal, scanRecursive, scanClasspath, ArrayUtilsWraps.asList(scanResources));
     }
 
     /**
      * Returns the detected message bundle base names, optionally including internal bundles and scanning the given resource paths
      *
      * @param addInternal whether to include the Hibernate Validator and Spring Security message bundles when present
+     * @param scanClasspath whether to scan the classpath, required by ClassGraph 5
      * @param scanRecursive whether to scan the given resource paths recursively
      * @param scanResources the resource paths to scan for properties files, may be {@code null}
      *
      * @return the detected base names, or {@code null} if none are found
      */
     @Nullable
-    public static Set<String> detectBaseNames(boolean addInternal, boolean scanRecursive, @Nullable List<String> scanResources) {
+    public static Set<String> detectBaseNames(boolean addInternal, boolean scanClasspath, boolean scanRecursive, @Nullable List<String> scanResources) {
         if (!addInternal && CollectionUtils.isEmpty(scanResources)) {
             return null;
         }
@@ -92,10 +94,13 @@ public abstract class MessageResourceDetectorUtils {
         }
         if (!CollectionUtils.isEmpty(scanResources)) {
             String[] paths = StringUtils.toStringArray(scanResources);
-            ClassGraph graph = scanRecursive ? new ClassGraph().acceptPaths(paths) : new ClassGraph().acceptPathsNonRecursive(paths);
+            ClassGraph graph = (scanRecursive ? new ClassGraph().acceptPaths(paths) : new ClassGraph().acceptPathsNonRecursive(paths));
+            if (scanClasspath) {
+                graph.enableClasspath();
+            }
             try (ScanResult scanResult = graph.scan()) {
                 List<String> founds = scanResult.getResourcesWithExtension(StringVariantConst.PROPERTIES).getPaths();
-                if (!CollectionUtils.isEmpty(result)) {
+                if (!CollectionUtils.isEmpty(founds)) {
                     for (String found : founds) {
                         found = RegexUtilsWraps.removeAll(found, FILE_PATTERN_8, FILE_PATTERN_7, FILE_PATTERN_6, FILE_PATTERN_4, FILE_PATTERN_2);
                         found = StringUtilsWraps.substringBeforeLast(found, CharVariantConst.DOT);

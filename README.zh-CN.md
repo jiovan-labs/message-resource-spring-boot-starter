@@ -25,6 +25,7 @@ jiovan:
     message-resource:
         default-locale: en-US
         message-bundle:
+            scan-classpath: true
             scan-recursive: true
             scan-resources:
                 - 'lang'

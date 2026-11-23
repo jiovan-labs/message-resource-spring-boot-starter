@@ -154,6 +154,15 @@ public class MessageResourceProperties implements Serializable {
         private Integer processorOrder = Ordered.LOWEST_PRECEDENCE - 1000;
 
         /**
+         * Whether to enable classpath scanning when detecting message bundles
+         * <p>
+         * Required by ClassGraph 5 to scan the classpath
+         * <p>
+         * Default is {@code true}
+         */
+        private Boolean scanClasspath = true;
+
+        /**
          * Whether to scan the {@code scanResources} recursive
          * <p>
          * Default is {@code true}

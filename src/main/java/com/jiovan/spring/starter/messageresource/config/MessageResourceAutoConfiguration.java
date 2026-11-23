@@ -85,7 +85,7 @@ public class MessageResourceAutoConfiguration {
             existsNames = configNames.stream().filter(StringUtils::isNotBlank).map(element -> element.replace(CharVariantConst.DOT, CharVariantConst.SLASH)).filter(ResourceUtilsWraps::existsClassPathResource).collect(Collectors.toSet());
         }
         MessageResourceProperties.MessageBundle props = properties.getMessageBundle();
-        Set<String> bundleNames = MessageResourceDetectorUtils.detectBaseNames(BooleanUtils.isTrue(props.getAddInternalBundles()), BooleanUtils.isTrue(props.getScanRecursive()), props.getScanResources());
+        Set<String> bundleNames = MessageResourceDetectorUtils.detectBaseNames(BooleanUtils.isTrue(props.getAddInternalBundles()), BooleanUtils.isTrue(props.getScanClasspath()), BooleanUtils.isTrue(props.getScanRecursive()), props.getScanResources());
         Set<String> unionNames = CollectionPlainWraps.newLinkedHashSetWithinAll(existsNames, bundleNames);
         if (CollectionUtils.isEmpty(unionNames)) {
             return null;
